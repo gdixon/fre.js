@@ -1,4 +1,5 @@
 import babel from 'rollup-plugin-babel';
+
 import terser from "rollup-plugin-terser";
 
 const plugins = [
@@ -8,25 +9,19 @@ const plugins = [
     terser.terser()
 ];
 
-const esModule = {
-    input: './src/index.js',
-    output: {
-        file: './dist/fre.js',
-        format: 'es',
-        name: 'Fre'
-    },
-    plugins: [terser.terser()]
-};
-
-const es5Module =  {
-    input: './src/index.js',
-    output: {
-        file: './dist/fre.es5.js',
-        format: 'es',
-        name: 'Fre'
-    },
-    plugins: plugins
-};
+const entries = [{
+    name: "fre",
+    file: "fre.js"
+}, {
+    name: "observable",
+    file: "./observable/index.js",
+}, {
+    name: "operator",
+    file: "./operator/index.js",
+}, {
+    name: "scheduler",
+    file: "./scheduler/index.js",
+}];
 
 const cjsModule = {
     input: './src/index.js',
@@ -48,10 +43,35 @@ const iifeModule = {
     plugins: plugins
 };
 
+const es5Module = entries.map((entry) => {
+
+    return {
+        input: './src/' + entry.file,
+        output: {
+            file: './dist/es5/' + entry.file,
+            format: 'es',
+            name: entry.name
+        },
+        plugins: plugins
+    }
+});
+
+const esModule = entries.map((entry) => {
+
+    return {
+        input: './src/' + entry.file,
+        output: {
+            file: './dist/es2015/' + entry.file,
+            format: 'es',
+            name: entry.name
+        },
+        plugins: [terser.terser()]
+    }
+});
 
 export default [
-    esModule,
-    es5Module,
     cjsModule,
     iifeModule,
+    ...esModule,
+    ...es5Module
 ];

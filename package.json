@@ -1,10 +1,12 @@
 {
   "name": "@gdixon/fre",
-  "version": "0.0.1",
+  "version": "0.0.2",
+  "license": "MIT",
   "description": "(F)unctional (Re)active Programming library",
+  "homepage": "https://github.com/gdixon/fre.js",
   "main": "./dist/fre.cjs.js",
-  "module": "./dist/fre.es5.js",
-  "es2015": "./dist/fre.js",
+  "module": "./dist/es5/fre.js",
+  "es2015": "./dist/es2015/fre.js",
   "scripts": {
     "lint": "eslint ./src/*",
     "lint:fix": "eslint ./src/* --fix",
@@ -12,8 +14,7 @@
     "test:watch": "nodemon --exec npm run test",
     "coverage": "cross-env NODE_ENV=test ./node_modules/.bin/nyc ./node_modules/.bin/mocha \"./spec/**/*-spec.js\"",
     "coverage:watch": "nodemon --exec npm run coverage",
-    "build": "rollup -c",
-    "postpublish" : "PACKAGE_VERSION=$(cat package.json | grep \\\"version\\\" | head -1 | awk -F: '{ print $2 }' | sed 's/[\",]//g' | tr -d '[[:space:]]') && git tag v$PACKAGE_VERSION && git push --tags"
+    "build": "rollup -c"
   },
   "files": [
     "dist"
@@ -54,7 +55,6 @@
     "rollup-plugin-terser": "^5.3.0",
     "sinon": "^9.0.1"
   },
-  "dependencies": {},
   "nyc": {
     "include": [
       "src/internal/**/*.js"
@@ -73,5 +73,10 @@
     "all": true,
     "sourceMap": false,
     "instrument": false
+  },
+  "sideEffects": false,
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/gdixon/fre.js.git"
   }
 }

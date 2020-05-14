@@ -16,8 +16,6 @@ Fre is written in javascript rather than typescript and covers just a subset of 
 
 For more details on specific usecases please check our [tests](https://github.com/gdixon/fre.js/blob/master/spec) for implementation details.
 
----
-
 ## Getting Started
 
 ```
