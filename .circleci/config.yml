@@ -1,0 +1,46 @@
+version: 2.1
+jobs:
+  build:
+    environment:
+      NODE_ENV: development
+    docker:
+      - image: 'circleci/node:12.12.0'
+    steps:
+      - checkout
+      - run:
+          name: update-npm
+          command: sudo npm install -g npm@latest
+      - run: npm install
+      - run: npm install mocha-junit-reporter
+      - run: mkdir reports
+      - run:
+          name: npm test
+          command: >-
+            ./node_modules/.bin/nyc ./node_modules/.bin/mocha
+            "./spec/**/*-spec.js" --timeout=10000 --exit --reporter
+            mocha-junit-reporter --reporter-options
+            mochaFile=reports/mocha/test-results.xml
+          when: always
+      - run:
+          name: npm lint
+          command: >-
+            ./node_modules/.bin/eslint ./src/**/*.js --format junit --output-file
+            ./reports/eslint/eslint.xml
+          when: always
+      - run:
+          name: npm coverage
+          command: npm run coverage
+          when: always
+      - run:
+          name: Uploading to codecov
+          command: bash <(curl -s https://codecov.io/bash)
+          when: always
+      - store_test_results:
+          path: reports
+      - store_artifacts:
+          path: ./reports/mocha/test-results.xml
+      - store_artifacts:
+          path: ./reports/eslint/eslint.xml
+      - store_artifacts:
+          path: ./coverage/lcov.info
+          prefix: tests
