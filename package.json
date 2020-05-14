@@ -1,6 +1,6 @@
 {
   "name": "@gdixon/fre",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "license": "MIT",
   "description": "(F)unctional (Re)active Programming library",
   "homepage": "https://github.com/gdixon/fre.js",
@@ -17,7 +17,11 @@
     "build": "rollup -c"
   },
   "files": [
-    "dist"
+    "dist",
+    "CONTRIBUTORS.md",
+    "LICENSE",
+    "package.json",
+    "readme.md"
   ],
   "keywords": [
     "functional",
