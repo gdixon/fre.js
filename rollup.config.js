@@ -23,16 +23,6 @@ const entries = [{
     file: "./scheduler/index.js",
 }];
 
-const cjsModule = {
-    input: './src/index.js',
-    output: {
-        file: './dist/fre.cjs.js',
-        format: 'cjs',
-        name: 'Fre'
-    },
-    plugins: plugins
-};
-
 const iifeModule = {
     input: './src/index.js',
     output: {
@@ -42,6 +32,30 @@ const iifeModule = {
     },
     plugins: plugins
 };
+
+
+// const cjsModule = {
+//     input: './src/index.js',
+//     output: {
+//         file: './dist/fre.cjs.js',
+//         format: 'cjs',
+//         name: 'Fre'
+//     },
+//     plugins: plugins
+// };
+
+const cjsModule = entries.map((entry) => {
+
+    return {
+        input: './src/' + entry.file,
+        output: {
+            file: './dist/cjs/' + entry.file,
+            format: 'cjs',
+            name: entry.name
+        },
+        plugins: plugins
+    }
+});
 
 const es5Module = entries.map((entry) => {
 
@@ -70,8 +84,8 @@ const esModule = entries.map((entry) => {
 });
 
 export default [
-    cjsModule,
     iifeModule,
+    ...cjsModule,
     ...esModule,
     ...es5Module
 ];

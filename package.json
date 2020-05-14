@@ -1,12 +1,31 @@
 {
   "name": "@gdixon/fre",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "license": "MIT",
   "description": "(F)unctional (Re)active Programming library",
   "homepage": "https://github.com/gdixon/fre.js",
-  "main": "./dist/fre.cjs.js",
-  "module": "./dist/es5/fre.js",
-  "es2015": "./dist/es2015/fre.js",
+  "main": "./dist/cjs/fre.js",
+  "exports": {
+    "import": {
+      "./": "./dist/es2015/fre.js",
+      "./observable": "./dist/es2015/observable/index.js",
+      "./operator": "./dist/es2015/operator/index.js",
+      "./scheduler": "./dist/es2015/scheduler/index.js"
+    },
+    "require": {
+      "./": "./dist/cjs/fre.js",
+      "./observable": "./dist/cjs/observable/index.js",
+      "./operator": "./dist/cjs/operator/index.js",
+      "./scheduler": "./dist/cjs/scheduler/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "CONTRIBUTORS.md",
+    "LICENSE",
+    "package.json",
+    "readme.md"
+  ],
   "scripts": {
     "lint": "eslint ./src/*",
     "lint:fix": "eslint ./src/* --fix",
@@ -16,13 +35,6 @@
     "coverage:watch": "nodemon --exec npm run coverage",
     "build": "rollup -c"
   },
-  "files": [
-    "dist",
-    "CONTRIBUTORS.md",
-    "LICENSE",
-    "package.json",
-    "readme.md"
-  ],
   "keywords": [
     "functional",
     "reactive",
