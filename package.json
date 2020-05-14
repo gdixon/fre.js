@@ -1,0 +1,77 @@
+{
+  "name": "@gdixon/fre",
+  "version": "0.0.1",
+  "description": "(F)unctional (Re)active Programming library",
+  "main": "./dist/fre.cjs.js",
+  "module": "./dist/fre.es5.js",
+  "es2015": "./dist/fre.js",
+  "scripts": {
+    "lint": "eslint ./src/*",
+    "lint:fix": "eslint ./src/* --fix",
+    "test": "babel-node ./node_modules/.bin/mocha \"./spec/**/*-spec.js\" --slow 0",
+    "test:watch": "nodemon --exec npm run test",
+    "coverage": "cross-env NODE_ENV=test ./node_modules/.bin/nyc ./node_modules/.bin/mocha \"./spec/**/*-spec.js\"",
+    "coverage:watch": "nodemon --exec npm run coverage",
+    "build": "rollup -c",
+    "postpublish" : "PACKAGE_VERSION=$(cat package.json | grep \\\"version\\\" | head -1 | awk -F: '{ print $2 }' | sed 's/[\",]//g' | tr -d '[[:space:]]') && git tag v$PACKAGE_VERSION && git push --tags"
+  },
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+    "functional",
+    "reactive",
+    "object",
+    "reactivity",
+    "react",
+    "freodb",
+    "freo",
+    "fre",
+    "frp",
+    "frop",
+    "data",
+    "store"
+  ],
+  "author": "GDixon",
+  "devDependencies": {
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.9.0",
+    "@babel/node": "^7.8.7",
+    "@babel/polyfill": "^7.8.7",
+    "@babel/preset-env": "^7.9.5",
+    "@babel/register": "^7.9.0",
+    "babel-plugin-istanbul": "^6.0.0",
+    "chai": "^4.2.0",
+    "core-js": "^3.6.4",
+    "cross-env": "^7.0.2",
+    "eslint": "^6.8.0",
+    "mocha": "^7.1.2",
+    "mock-raf": "^1.0.1",
+    "nodemon": "^2.0.3",
+    "nyc": "^15.0.1",
+    "rollup": "^2.6.1",
+    "rollup-plugin-babel": "^4.4.0",
+    "rollup-plugin-terser": "^5.3.0",
+    "sinon": "^9.0.1"
+  },
+  "dependencies": {},
+  "nyc": {
+    "include": [
+      "src/internal/**/*.js"
+    ],
+    "exclude": [
+      "spec/**/*-spec.js"
+    ],
+    "require": [
+      "@babel/register"
+    ],
+    "reporter": [
+      "lcov",
+      "html",
+      "text-summary"
+    ],
+    "all": true,
+    "sourceMap": false,
+    "instrument": false
+  }
+}
