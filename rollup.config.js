@@ -1,91 +1,61 @@
+// transpile the builds into es5 compatible versions
 import babel from 'rollup-plugin-babel';
 
+// minify the the builds
 import terser from "rollup-plugin-terser";
 
-const plugins = [
-    babel({
-        exclude: 'node_modules/**'
-    }),
-    terser.terser()
-];
-
-const entries = [{
-    name: "fre",
-    file: "fre.js"
-}, {
-    name: "observable",
-    file: "./observable/index.js",
-}, {
-    name: "operator",
-    file: "./operator/index.js",
-}, {
-    name: "scheduler",
-    file: "./scheduler/index.js",
-}];
-
-const iifeModule = {
+// browser bundle to include everything
+const iifeBuild = {
     input: './src/index.js',
     output: {
         file: './dist/fre.iife.js',
         format: 'iife',
         name: 'Fre'
     },
-    plugins: plugins
+    plugins: [
+        babel({
+            exclude: 'node_modules/**'
+        }),
+        terser.terser()
+    ]
 };
 
-
-// const cjsModule = {
-//     input: './src/index.js',
-//     output: {
-//         file: './dist/fre.cjs.js',
-//         format: 'cjs',
-//         name: 'Fre'
-//     },
-//     plugins: plugins
-// };
-
-const cjsModule = entries.map((entry) => {
+// cjs should expose the root directly (tree shaking should be done automatically on consumption?)
+const cjsBuild = [
+    {
+        name: "fre",
+        file: "fre.js",
+        output: "index.js"
+    }, {
+        name: "observable",
+        file: "observable/index.js",
+    }, {
+        name: "operator",
+        file: "operator/index.js",
+    }, {
+        name: "scheduler",
+        file: "scheduler/index.js",
+    }
+].map((entry) => {
 
     return {
         input: './src/' + entry.file,
         output: {
-            file: './dist/cjs/' + entry.file,
+            file: './dist/' + (entry.output ? entry.output : entry.file),
             format: 'cjs',
             name: entry.name
         },
-        plugins: plugins
+        plugins: [
+            babel({
+                exclude: 'node_modules/**'
+            }),
+            terser.terser()
+        ]
     }
 });
 
-const es5Module = entries.map((entry) => {
-
-    return {
-        input: './src/' + entry.file,
-        output: {
-            file: './dist/es5/' + entry.file,
-            format: 'es',
-            name: entry.name
-        },
-        plugins: plugins
-    }
-});
-
-const esModule = entries.map((entry) => {
-
-    return {
-        input: './src/' + entry.file,
-        output: {
-            file: './dist/es2015/' + entry.file,
-            format: 'es',
-            name: entry.name
-        },
-        plugins: [terser.terser()]
-    }
-});
-
+// only iife bundle and cjsModule to be built by rollup everything else will be handled by make-esmodules
 export default [
-    iifeModule,
-    ...cjsModule,
-    ...esModule,
-    ...es5Module
+    iifeBuild,
+    ...cjsBuild,
 ];

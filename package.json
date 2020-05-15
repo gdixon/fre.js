@@ -1,27 +1,20 @@
 {
   "name": "@gdixon/fre",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "license": "MIT",
   "description": "(F)unctional (Re)active Programming library",
   "homepage": "https://github.com/gdixon/fre.js",
-  "main": "./dist/cjs/fre.js",
-  "exports": {
-    "import": {
-      "./": "./dist/es2015/fre.js",
-      "./observable": "./dist/es2015/observable/index.js",
-      "./operator": "./dist/es2015/operator/index.js",
-      "./scheduler": "./dist/es2015/scheduler/index.js"
-    },
-    "require": {
-      "./": "./dist/cjs/fre.js",
-      "./observable": "./dist/cjs/observable/index.js",
-      "./operator": "./dist/cjs/operator/index.js",
-      "./scheduler": "./dist/cjs/scheduler/index.js"
-    }
-  },
+  "main": "./index.js",
+  "module": "./dist/es5/index.js",
+  "es2015": "./dist/es2015/index.js",
   "files": [
-    "dist",
-    "CONTRIBUTORS.md",
+    "es5",
+    "es2015",
+    "observable",
+    "operator",
+    "scheduler",
+    "fre.iife.js",
+    "index.js",
     "LICENSE",
     "package.json",
     "readme.md"
@@ -33,7 +26,9 @@
     "test:watch": "nodemon --exec npm run test",
     "coverage": "cross-env NODE_ENV=test ./node_modules/.bin/nyc ./node_modules/.bin/mocha \"./spec/**/*-spec.js\"",
     "coverage:watch": "nodemon --exec npm run coverage",
-    "build": "rollup -c"
+    "bundle": "node ./tools/make-esmodules.js && rollup -c",
+    "copy": "cp package.json ./dist/ && cp readme.md ./dist/ && cp LICENSE ./dist/",
+    "build": "npm run bundle && npm run copy"
   },
   "keywords": [
     "functional",
