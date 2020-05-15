@@ -287,7 +287,7 @@ sumOfPlusOne.subscribe((value) => {
 - Subscription
 - Scheduler
 
-### <a name="operator"></a>List of all Operators/* (``` import { * } from "@gdixon/fre/operator" ```)
+### <a name="operator"></a>List of all Operator/* modules (``` import { * } from "@gdixon/fre/operator" ```)
 
 - bucket
 - concat
@@ -330,7 +330,7 @@ sumOfPlusOne.subscribe((value) => {
 - tap
 - toArray
 
-### <a name="observable"></a>List of all Observable/* creation methods (``` import { * } from "@gdixon/fre/observable" ```)
+### <a name="observable"></a>List of all Observable/* creation modules (``` import { * } from "@gdixon/fre/observable" ```)
 
 - CombineLatest
 - Concat
@@ -350,7 +350,7 @@ sumOfPlusOne.subscribe((value) => {
 - Switch
 - Zip
 
-### <a name="scheduler"></a>List of all Scheduler/* processing queues (``` import { * } from "@gdixon/fre/scheduler" ```)
+### <a name="scheduler"></a>List of all Scheduler/* queue modules (``` import { * } from "@gdixon/fre/scheduler" ```)
 
 - Animation
 - Asap
@@ -375,21 +375,27 @@ npm run coverage
 npm run build
 ```
 
-- Commonjs
+- Minified and transpiled Commonjs build
 
-  > dist/fre.cjs.js - 33kb
+  > dist/index.js - 14kb
 
-- IIFE build (for direct inclusion in script tags)
+  > dist/observable/index.js - 17kb
+
+  > dist/operator/index.js - 25kb
+  
+  > dist/scheduler/index.js - 7kb
+
+- Minified and transpiled IIFE build (for direct inclusion in script tags)
 
   > dist/fre.iife.js - 32kb
 
-- ES5 build
+- Transpiled ES5 build (commonjs)
 
-  > dist/fre.es5.js - 32kb
+  > dist/es5 - 369kb
 
-- ES6 build
+- ES6 build (copy of src)
 
-  > dist/fre.js - 24kb
+  > dist/es2015 - 377kb
 
 ## Versioning
 
