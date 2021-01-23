@@ -26,7 +26,7 @@ export const shareBehaviour = function (initialValue, useRefCount, selector, opt
     // build a publisherFactory by running options through multicast
     const publisherFactory = multicast(() => new BehaviourSubject(initialValue), selector, Object.assign(
         {
-            // this forces the subject to connect to source on first run
+            // this forces the autoconnect to take place (connect the stream) and renews Subjects when theyre present in .closed==true state
             replay: true,
             // pass through the refCount ability (Bool - should the subject close if 0 connections are present? only closes & renews Subject's connection if the source completes)
             refCount: useRefCount

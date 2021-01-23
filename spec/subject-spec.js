@@ -1,7 +1,7 @@
 // import chai for testing
 import chai from 'chai';
 // construct new Observable instances for each test
-import { Subject, Observer } from "../src";
+import { Subject, Observer } from "../src/fre.js";
 
 describe("fre Subject functionality", function () {
 

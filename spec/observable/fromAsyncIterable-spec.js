@@ -7,7 +7,7 @@ import chai from 'chai';
 // import sinon for mocking timers
 import sinon from 'sinon';
 // FromArray to create a new Observable for each test
-import { FromAsyncIterable, Async } from "../../src";
+import { FromAsyncIterable, Async } from "../../src/fre.js";
 // import toArray to finalise tests to one output
 import { toArray } from "../../src/operator";
 

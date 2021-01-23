@@ -2,7 +2,7 @@
 import chai from 'chai';
 import sinon from 'sinon';
 // construct new Observable instances for each test
-import { ReplaySubject } from "../src";
+import { ReplaySubject } from "../src/fre.js";
 // import Observer helpers to build out test cases
 import { helpers } from "./helpers/publishers.js";
 
@@ -18,13 +18,36 @@ describe("fre replaySubject functionality", function () {
             }, () => {
                 done();
             });
-            // complete the behaviourSubject
+            // complete the ReplaySubject
             subject.complete();
         } catch (e) {
             done(e);
         }
     });
 
+    // set-up spec testing feature-set
+    it("should stop sending messages after complete/unsubscribe", function (done) {
+
+        try {
+            const subject = ReplaySubject.create();
+            // subscribe to it
+            subject.subscribe((mess) => {
+                done((typeof mess !== "undefined" ? mess : "shouldnt be any messages"));
+            },(e) => {
+                done(e);
+            });
+            // complete the ReplaySubject
+            subject.unsubscribe();
+            // this wont hit anywhere
+            subject.next(1);
+            // no items buffered
+            chai.expect(subject.buffer.length).to.equal(0);
+            // done
+            done();
+        } catch (e) {
+            done(e);
+        }
+    });
 
     // set-up spec testing feature-set
     it("should allow for bufferSize to control how many messages are stored", function (done) {

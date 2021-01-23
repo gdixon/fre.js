@@ -5,7 +5,7 @@ import "regenerator-runtime/runtime"
 // import chai for testing
 import chai from 'chai';
 // FromObservable to create a new Observable for each test
-import { FromObservable, Async } from "../../src";
+import { FromObservable, Async } from "../../src/fre.js";
 // pipe the resultant stream to toArray to get a single testable output
 import { toArray } from "../../src/operator";
 // import Observer helpers to build out test cases
@@ -100,7 +100,6 @@ describe("fre Observable/FromObservable functionality", function() {
         });
     });
 
-
     it("should carry errors through to the Subscriber using Async scheduler", function (done) {
         // carry out a filter on the subject
         const resultOfCallback = FromObservable(helpers.observableError, Async).pipe(toArray());
@@ -115,7 +114,7 @@ describe("fre Observable/FromObservable functionality", function() {
             // mark the action (it shouldnt happen)
             done("Completed when it shouldnt have been");
         }, () => {
-            // finsihed with done]
+            // finsihed with done
             done();
         });
     });

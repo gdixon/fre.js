@@ -41,7 +41,7 @@ export const FromArray = function(input, scheduler, options) {
             }));
 
             // return the subscription to be added into the subscribers teardowns
-            return subscription;
+            return subscriber;
         } else {
             // no schedule run through the array sychronoulsy (inner will invoke call to inner untill the index is equal to the length of source)
             inner(inner);

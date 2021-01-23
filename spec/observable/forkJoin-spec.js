@@ -1,7 +1,7 @@
 // import chai for testing
 import chai from 'chai';
 // ForkJoin on new Observables constructed for each test
-import { Observable, ForkJoin } from "../../src";
+import { Observable, ForkJoin } from "../../src/fre.js";
 // import Observer helpers to build out test cases
 import { helpers } from "../helpers/publishers.js";
 

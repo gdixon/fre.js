@@ -1,7 +1,7 @@
 // import chai for testing
 import chai from 'chai';
 // FromCallback to create a new Observable for each test
-import { FromCallback } from "../../src";
+import { FromCallback } from "../../src/fre.js";
 
 // set-up spec testing feature-set
 describe("fre Observable/FromCallback functionality", function() {

@@ -1,7 +1,7 @@
 // import chai for testing
 import chai from 'chai';
 // construct new Observable instances for each test
-import { Observable, Subject, BehaviourSubject } from "../../src";
+import { Observable, Subject, BehaviourSubject } from "../../src/fre.js";
 // import toArray to finalise tests to one output
 import { shareReplay, tap } from "../../src/operator";
 // import Observer helpers to build out test cases
@@ -45,7 +45,7 @@ const trueRefCountSpecCase = (observable, publisher, args, finalCount, done) => 
         // called the last message
         chai.expect(finalCount).to.equal(tapped);
     });
-    // carry out after set-up (if Observable like but not an Observable to fill Subject again)
+    // carry out after set-up (if Subject-like but not an Observable to fill Subject again)
     if (publisher) publisher(observable);
     // connect the stream and expect the result to return straight away
     shared.subscribe(() => {

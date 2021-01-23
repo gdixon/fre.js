@@ -2,7 +2,7 @@
 import chai from 'chai';
 import sinon from 'sinon';
 // construct new Observable instances for each test
-import { Observable, Subject, BehaviourSubject, Queue } from "../../src";
+import { Observable, Subject, BehaviourSubject, Queue } from "../../src/fre.js";
 // import toArray to finalise tests to one output
 import { delay, toArray } from "../../src/operator";
 // import Observer helpers to build out test cases

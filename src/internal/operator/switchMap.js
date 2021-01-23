@@ -1,5 +1,3 @@
-// type check against the projected value to check for Observable type - otherwise just map the value
-import { Observable } from "../observable.js";
 // wrap the Mapping operation via the Operator (to instrument ctx)
 import { operator } from "./operator.js";
 
@@ -25,14 +23,14 @@ export const switchMap = function (project, selector, unsubscribe) {
             // record the outerObservr context for complete calls
             const outerObserver = this;
             // pull the res from the projection
-            const inner = (project instanceof Observable ? project : (typeof project === "function" ? project(message, state.index) : message));
+            const inner = (project && project.subscribe ? project : (typeof project === "function" ? project(message, state.index) : message));
             // drop old inner subscription
             if (state.subscribed && state.subscribed.unsubscribe) {
                 // clear the subscription
                 state.subscribed.unsubscribe();
             }
-            // check that res is an Observable
-            if (!(inner instanceof Observable)) {
+            // check that res is an Observable(like)
+            if (!(inner && inner.subscribe)) {
                 // throwing if we can't build an Observable from the project 
                 throw ("SwitchMap: Project must be supplied as fn which resolves to an Observable");
             } else {

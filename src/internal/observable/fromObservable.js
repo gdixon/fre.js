@@ -30,7 +30,7 @@ export const FromObservable = function (input, scheduler, options) {
                 }));
 
                 // return the subscription to be added to the subscribers teardowns
-                return sub;
+                return subscriber;
             } else {
 
                 // subscriber to target observable

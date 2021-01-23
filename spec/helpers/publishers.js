@@ -1,5 +1,5 @@
 // test the subject using Observables
-import { Observable } from "../../src";
+import { Observable } from "../../src/fre.js";
 // test timings on asynchronous tests by skipping until value is === 2 (to delay the starting point)
 import { skipWhile } from "../../src/operator";
 

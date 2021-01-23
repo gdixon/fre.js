@@ -71,8 +71,8 @@ const Dispose = function (teardowns) {
     // iterate the collection and clear all teardowns (while teardowns are present)
     while (teardowns && teardowns.length > 0 && (teardown = teardowns.splice(0, 1)[0])) {
         // when a subscription is given - check for empty state before unloading
-        if (teardown && teardown instanceof Subscription) {
-            // call out to the unsubscribe method immediately
+        if (teardown && (typeof teardown.unsubscribe == "function")) {
+            // call out to the unsubscribe method on a subscriberLike
             teardown.unsubscribe();
         } else if (teardown && (typeof teardown == "function" || typeof teardown.call === "function")) {
             // if the teardown is either a function or an object with a call method then call()

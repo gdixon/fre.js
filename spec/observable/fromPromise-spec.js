@@ -1,7 +1,7 @@
 // import chai for testing
 import chai from 'chai';
 // FromPromise to create a new Observable for each test
-import { FromPromise, Async } from "../../src";
+import { FromPromise, Async } from "../../src/fre.js";
 
 // set-up spec testing feature-set
 describe("fre Observable/FromPromise functionality", function() {

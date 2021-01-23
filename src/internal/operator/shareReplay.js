@@ -29,9 +29,9 @@ export const shareReplay = function (bufferSize, windowTime, scheduler, useRefCo
     // build a publisherFactory by running options through multicast
     const publisherFactory = multicast(() => new ReplaySubject(bufferSize, windowTime, scheduler), selector, Object.assign(
         {
-            // this forces the refCount to take place (connect the stream) and only renews Subjects if theyre present in .closed==true state
+            // this forces the autoconnect to take place (connect the stream) and renews Subjects when theyre present in .closed==true state
             replay: true,
-            // pass through the refCount ability (Bool - should the subject close if 0 connections are present? - default is true when unprovided)
+            // pass through the refCount ability (Bool - should the subject close if 0 connections are present? - default is true (when ommited))
             refCount: useRefCount
         }, 
         options

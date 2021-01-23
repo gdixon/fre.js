@@ -1,7 +1,7 @@
 // import chai for testing
 import chai from 'chai';
 // construct new Observable instances for each test
-import { Observable, Subject, BehaviourSubject, ReplaySubject, Async } from "../../src";
+import { Observable, Subject, BehaviourSubject, ReplaySubject, Async } from "../../src/fre.js";
 // import toArray to finalise tests to one output
 import { tap, multicast, toArray } from "../../src/operator";
 // import Observer helpers to build out test cases
@@ -167,8 +167,13 @@ const defaultSpecCase = (observable, publisher, expectation, expectedHits, done)
             chai.expect(unsubscribed).to.equal(5);
             chai.expect(disconnects).to.equal(1);
         });
-        // because the source completes - we expect both the subscribed and unsubscribed to equal 5
-        chai.expect(subscribed + unsubscribed).to.equal(10);
+        if (!publisher) {
+            // because the source does not complete - we expect to have subscribed but not unsubscribed
+            chai.expect(subscribed + unsubscribed).to.equal(5);
+        } else {
+            // because the source completes - we expect both the subscribed and unsubscribed to equal 5
+            chai.expect(subscribed + unsubscribed).to.equal(10);
+        }
         // finsihed with done]
         done();
     });
@@ -180,7 +185,7 @@ describe("fre operator/multicast functionality", function () {
     it("should carry-out the multicast operator against an Observable", function (done) {
         // the source completes and fills the buffer on first subscription, second message replays from buffer and fills buffer with next
         // timeout puts after the windowTimer and the messages are cleared - however we do buffer a new message which is picked up by the next subscription
-        defaultSpecCase(new Observable(helpers.withComplete), undefined, [1, 2, 3, 4], 4, done);
+        defaultSpecCase(new Subject(helpers.withoutComplete), undefined, [1, 2, 3, 4], 4, done);
     });
 
     // set-up spec testing feature-set

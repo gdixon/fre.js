@@ -2,7 +2,7 @@
 import chai from 'chai';
 import sinon from 'sinon';
 // construct new Observable instances for each test
-import { Scheduler } from "../src";
+import { Scheduler } from "../src/fre.js";
 
 describe("fre Scheduler functionality", function () {
 

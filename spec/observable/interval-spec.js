@@ -3,7 +3,7 @@ import chai from 'chai';
 // import sinon for mocking timers
 import sinon from 'sinon';
 // Interval to create a new Observable for each test
-import { Interval, Queue } from "../../src";
+import { Interval, Queue } from "../../src/fre.js";
 // import toArray to finalise tests to one output
 import { toArray, takeWhile } from "../../src/operator";
 

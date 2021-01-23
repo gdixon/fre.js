@@ -1,7 +1,7 @@
 // import chai for testing
 import chai from 'chai';
 // Concat with new Observables constructed for each test
-import { Observable, Concat } from "../../src/index.js";
+import { Observable, Concat } from "../../src/fre.js";
 // pipe the resultant stream to toArray to get a single testable output
 import { toArray } from "../../src/operator";
 // import Observer helpers to build out test cases

@@ -41,7 +41,7 @@ export class ReplaySubject extends Subject {
 
     // iterates on this.observers and calls the update method on each observer.
     next(message) {
-        // dont emit messages if the subject itself was unsubscribed
+        // dont emit messages if the subject itself was unsubscribed? what about completed?
         if (!this.closed) {
             // local ref to the buffer
             const {buffer} = this;

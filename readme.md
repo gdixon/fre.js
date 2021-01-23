@@ -1,20 +1,26 @@
 # Fre.js - [F]unctional [Re]active Programming library
 
-![CircleCI](https://img.shields.io/circleci/build/gh/gdixon/fre.js/master.svg?style=for-the-badge&token=e8f98a51ce30c29ebffd779ff7fcc43eaee162e5)
-![Codecov](https://img.shields.io/codecov/c/github/gdixon/fre.js/master.svg?style=for-the-badge&token=HA6EDXX9NE)
-![License](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)
-![npm](https://img.shields.io/npm/v/@gdixon/fre?style=for-the-badge)
-![npm bundle size](https://img.shields.io/bundlephobia/min/@gdixon/fre?style=for-the-badge)
+![CircleCI](https://img.shields.io/circleci/build/gh/gdixon/fre.js/master.svg?style=flat-square&token=e8f98a51ce30c29ebffd779ff7fcc43eaee162e5)
+![Codecov](https://img.shields.io/codecov/c/github/gdixon/fre.js/master.svg?style=flat-square&token=HA6EDXX9NE)
+![Bundled size](https://img.badgesize.io/https://unpkg.com/@gdixon/fre/fre.bundle.js?label=bundled&style=flat-square)
+![NPM version](https://img.shields.io/npm/v/@gdixon/fre?label=version&style=flat-square)
+![License](https://img.shields.io/badge/License-MIT-yellow.svg?label=license&style=flat-square)
 
-Fre is a Functional Reactive Programming (FRP) library much like [RxJS](https://github.com/ReactiveX/rxjs), with a slight alteration to the Observer signature: where RxJS's Observable.subscribe exposes; next, error and complete - Fre's Observable.subscribe exposes; next, error, complete and **unsubscribe**.
+## Preamble
 
-In RxJS if you wanted to hook into the unsusbcribe event you would add a teardown to the returned Subscription after subscribing, Fre rolls "unsubscribe" into the core Subscribe signature and adds additional unsubscribe methods to all Operators (usually suplied as the final argument) allowing for less pure useage and finer control over shared artifacts.
+Fre is an exercise in repeating and expanding on a proven experiment. 
 
-Fre's Multicasting Operators (share, publish, etc...) also support additional methods for onConnect, onDisconnect, onSubscribe and onUnsubscribe which serve to expose the multicasting lifecycle to the outside world. They can be used to mirror the refCount recycling procedure to the outside so that we can manage our own clean-up for when a multicasted Subject is retired.
+The core of Fre is almost the same as [RxJS](https://github.com/ReactiveX/rxjs), and serves the same purpose, Fre is a module library which enables Functional Reactive Programming (FRP), with a slight alteration to the Observer/Subscriber signature as well as hosting a more liberal multicasting interface. 
 
-Fre is written in javascript rather than typescript and covers just a subset of RxJS Operators, [click here](#operator) to see whats included.
+## Detailed Introduction
 
-For more details on specific usecases please check our [tests](https://github.com/gdixon/fre.js/blob/master/spec) for implementation details.
+In RxJS if you wanted to hook into the ```unsusbcribe``` event you would add a teardown to the returned ```Subscription``` after subscribing, Fre rolls ```"unsubscribe"``` into the core ```Observer``` signature and adds additional ```.unsubscribe``` methods to all Operators (usually suplied as the final argument) allowing for finer control over shared artifacts (this goes against the functional programming manifesto, but can be useful when used with restraint): where RxJS's Observer exposes; ```.next```, ```.error``` and ```.complete``` - Fre's Observer exposes; ```.next```, ```.error```, ```.complete``` and **```.unsubscribe```**.
+
+Fre's ```multicast``` Operators (```share```, ```publish```, etc...) support options for the following additional methods; ```.onConnect()```, ```.onDisconnect()```, ```.onReconnect()```, ```.onSubscribe()``` and ```.onUnsubscribe()```, which serve to expose the multicasting lifecycle to the outside. They can be used to mirror the ```refCount``` procedure so that the consumer can manage its own clean-up, ```refCount``` has also been remounted as an option as opposed to a seperate ```Operator``` to make usage more direct and explicit.
+
+Fre is written in Javascript (as a feature) rather than Typescript and covers just a subset of the Operators that RxJS covers ([click here](#operator) to see whats included), however because the singature is virtual the same, Fre should be able to consume RxJS operators without the need for any changes.
+
+Please check the [tests](https://github.com/gdixon/fre.js/blob/master/spec) for more specific implementation details.
 
 ## Getting Started
 
@@ -52,7 +58,7 @@ observable.subscribe((message) => {
     $ message
     $ completed
     $ unsubscribed
-/*
+*/
 ```
 
 ### Constructing and subscribing to a Subject
@@ -64,7 +70,7 @@ import { Subject } from "@gdixon/fre"
 // create a new Subject
 const subject = new Subject();
 
-// Publisher can be defined after the Observable/Subject has been constructed...
+// Publisher can (optionally) be defined after the Observable/Subject has been constructed...
 subject.setPublisher(function(subscriber) {
 
     // return a teardown fn to be added to the subscribers teardowns
@@ -99,7 +105,7 @@ subject.complete();
     $ completed
     $ subscriber teardown
     $ unsubscribed
-/*
+*/
 ```
 
 ### Constructing and subscribing to a BehaviourSubject
@@ -111,9 +117,10 @@ import { BehaviourSubject } from "@gdixon/fre"
 // create a BehaviourSubject with an initial value of "message"
 const subject = new BehaviourSubject("message");
 
-// setting a publisher will overide any previously set publisher using the decorator pattern
+// Setting a Publisher will overide the internal Publisher and any other previously set Publishers using the *decorator pattern 
+// *(each new publisher in the chain should invoke or replace the previous one)
 subject.setPublisher(function (subscriber, publisher) {
-    // call to the original publisher (to invoke BehaviourSubjects publisher)
+    // call to the original publisher (to invoke BehaviourSubjects internal publisher)
     publisher.call(this, subscriber);
 
     // return a teardown fn to be added to the subscribers teardowns
@@ -122,7 +129,7 @@ subject.setPublisher(function (subscriber, publisher) {
     }
 });
 
-// subscribing to the BehaviourSubject will emit the last value the BehaviourSubject saw to the new Subscriber
+// subscribing to the BehaviourSubject will emit the last value the BehaviourSubject received to the new Subscriber
 subject.subscribe((message) => {
     console.log(message);
 }, (err) => {
@@ -142,7 +149,7 @@ subject.complete();
     $ completed
     $ subscriber teardown
     $ unsubscribed
-/*
+*/
 ```
 
 ### Constructing and subscribing to a ReplaySubject
@@ -154,9 +161,10 @@ import { ReplaySubject } from "@gdixon/fre"
 // create a ReplaySubject (with no buffer invalidation rules)
 const subject = new ReplaySubject();
 
-// setting a publisher will overide any previously set publisher using the decorator pattern
+// Setting a Publisher will overide the internal Publisher and any other previously set Publishers using the *decorator pattern 
+// *(each new publisher in the chain should invoke or replace the previous one)
 subject.setPublisher(function (subscriber, publisher) {
-    // call to the original publisher (to invoke ReplaySubjects publisher)
+    // call to the original publisher (to invoke ReplaySubjects internal publisher)
     publisher.call(this, subscriber);
 
     // return a teardown fn to be added to the subscribers teardowns
@@ -208,7 +216,7 @@ subject.complete();
     $ completed2
     $ subscriber teardown
     $ unsubscribed2
-/*
+*/
 ```
 
 ### Constructing and subscribing to piped Operators against an Observable
@@ -242,7 +250,7 @@ sumOfPlusOne.subscribe((value) => {
 /*
     logs:
     $ 14
-/*
+*/
 ```
 
 _map, filter and reduce are also aliased against the Observable itself without needing to use the pipe method..._
@@ -271,12 +279,12 @@ sumOfPlusOne.subscribe((value) => {
 /*
     logs:
     $ 14
-/*
+*/
 ```
 
-## Lists of Fre modules
+## List of Fre's modules
 
-### <a name="root"></a>List of all root level modules ./* (``` import { * } from "@gdixon/fre" ```)
+### <a name="root"></a>@gdixon/fre
 
 - Observable
 - Subject
@@ -287,7 +295,7 @@ sumOfPlusOne.subscribe((value) => {
 - Subscription
 - Scheduler
 
-### <a name="operator"></a>List of all Operator/* modules (``` import { * } from "@gdixon/fre/operator" ```)
+### <a name="operator"></a>@gdixon/fre/operator
 
 - bucket
 - concat
@@ -330,7 +338,7 @@ sumOfPlusOne.subscribe((value) => {
 - tap
 - toArray
 
-### <a name="observable"></a>List of all Observable/* creation modules (``` import { * } from "@gdixon/fre/observable" ```)
+### <a name="observable"></a>@gdixon/fre/observable
 
 - CombineLatest
 - Concat
@@ -350,7 +358,7 @@ sumOfPlusOne.subscribe((value) => {
 - Switch
 - Zip
 
-### <a name="scheduler"></a>List of all Scheduler/* queue modules (``` import { * } from "@gdixon/fre/scheduler" ```)
+### <a name="scheduler"></a>@gdixon/fre/scheduler
 
 - Animation
 - Asap
@@ -360,59 +368,41 @@ sumOfPlusOne.subscribe((value) => {
 ## Testing
 
 ```
-npm run test
+npm run test[:watch]
 ```
 
 ## Coverage
 
 ```
-npm run coverage
+npm run coverage[:watch]
 ```
 
-## Builds (including all modules)
+## Lint
+
+```
+npm run lint[:fix]
+```
+
+## Builds (cjs/es5/es2015 and bundles to fre.bundle.js)
 
 ```
 npm run build
 ```
 
-- Minified and transpiled Commonjs build
-
-  > dist/index.js - 14kb
-
-  > dist/observable/index.js - 17kb
-
-  > dist/operator/index.js - 25kb
-  
-  > dist/scheduler/index.js - 7kb
-
-- Minified and transpiled IIFE build (for direct inclusion in script tags)
-
-  > dist/fre.iife.js - 32kb
-
-- Transpiled ES5 build (commonjs)
-
-  > dist/es5 - 369kb
-
-- ES6 build (copy of src)
-
-  > dist/es2015 - 377kb
-
 ## Versioning
 
 - We use [SemVer](http://semver.org/) for versioning. For available versions, see the [tags on this repository](https://github.com/explicit/byRef.js/tags).
 
-## Authors
+## Contributors
 
 - **Graham Dixon** - _Initial work_ - [GDixon](https://github.com/GDixon)
 
-  See also the list of [contributors](https://github.com/explicit/byRef.js/contributors) who participated in this project.
+  See also the list of [contributors](https://github.com/gdixon/fre.js/CONTRIBUTORS.md) who participated in this project.
 
 ## License
 
-- This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+- This project is licensed under the MIT License - see the [license](https://github.com/gdixon/fre.js/LICENSE.md) file for details
 
 ## Acknowledgements
 
-- RxJS - without RxJS - fre.js would not exist.
-
-  Thank you to everyone who has contributed to making RxJS the fantastic library that it is.
+- [RxJS](https://github.com/ReactiveX/rxjs) - A reactive programming library for JavaScript (with thanks to [Ben Lesh](https://github.com/benlesh) and all [RxJS contributors](https://github.com/ReactiveX/rxjs/graphs/contributors))

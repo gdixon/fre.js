@@ -26,7 +26,7 @@ export class Subscriber extends Subscription {
 
     next(message) {
         // ensure the chain is open
-        if (!this.closed && this.observer) {
+        if (!this.isStopped && this.observer) {
             try {
                 // push message to the observer
                 this.observer.next(message);
@@ -39,7 +39,7 @@ export class Subscriber extends Subscription {
 
     error(e) {
         // ensure the chain is open
-        if (!this.closed && this.observer) {
+        if (!this.isStopped && this.observer) {
             // push error to the observer -- this could throw?
             this.observer.error(e);
             // drop subscription after receiving error message errors close the chain regardless of if complete was called first
@@ -58,7 +58,7 @@ export class Subscriber extends Subscription {
                 this.observer.complete();
             } catch (e) {
                 // propagate error through this subscriber
-                this.error(e);
+                this.observer.error(e);
             }
             // final Subscriber in the chain is responsible for calling out to the unsubscribe operation after a complete
             if (!this.operator) this.unsubscribe();

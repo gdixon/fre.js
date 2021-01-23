@@ -1,7 +1,7 @@
 // import chai for testing
 import chai from 'chai';
 // FromArray to create a new Observable for each test
-import { Of } from "../../src";
+import { Of } from "../../src/fre.js";
 // import toArray to finalise tests to one output
 import { toArray } from "../../src/operator";
 

@@ -33,6 +33,7 @@ export class Observable {
     // place symbol definition for interop (returns instance)
     [typeof Symbol === "function" && Symbol.observable || "@@observable"]() {
 
+        // returns Observable instance
         return this;
     }
 
@@ -53,8 +54,8 @@ export class Observable {
 
     // Add an observer to this.observers.
     subscribe(next, error, complete, unsubscribe) {
-        // we call FIFO so push subscription into place (as an Observer instance) if the Observable is hot
-        const subscriber = (next && next instanceof Subscriber ? next : new Subscriber(next, error, complete, unsubscribe));
+        // construct a subscriber for the methods -- if given next is subscriberLike use that instead
+        const subscriber = (next && next.observer ? next : new Subscriber(next, error, complete, unsubscribe));
         // mark that the observer entered connected state
         subscriber.observer._connected = true;
         // ensure the subscriber is in place
@@ -116,7 +117,7 @@ export class Observable {
         // immediately create the pipe ensuring all Operators resolve to an Observable
         // - reduce the piped Observables by applying the next to the prev 
         // - we reduce starting with "this" as the root source (current ctx is where the messages will be sourced from)
-        // - * note the operator must always be pipeable (should accept the prev as an argument and a new Observable)
+        // - * note the operator must always be pipeable (should accept the prev as an argument and return an Observable)
         return args.reduce((ctx, operator) => {
             // check for operator
             if (operator && typeof operator == "function") {
@@ -129,7 +130,7 @@ export class Observable {
                 }
             }
 
-            // allow falsys to skipout and move to next/return last
+            // allow missing Operators (conditional inclusions) to skipout and move to next by returning prev
             return ctx;
         }, this);
     }

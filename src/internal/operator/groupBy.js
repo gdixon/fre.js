@@ -19,15 +19,15 @@ export const groupBy = function (keySelector, elementSelector, durationSelector,
             };
         }, function (observer, message, state) {
             // produce the groups key
-            let group = keySelector(message);
+            const group = keySelector(message);
             // make sure we cast entities
             if (!observer.closed && message && group) {
                 // check if the group needs to be created
                 if (!state.groups[group]) {
+                    // create the base subject to emit against
+                    const subject = (!subjectSelector ? new Subject() : (subjectSelector.subscribe && subjectSelector.next ? subjectSelector : subjectSelector(group)));
                     // push the group so we can complete in provided order
                     state.order.push(group);
-                    // create the base subject to emit against
-                    let subject = (!subjectSelector ? new Subject() : (subjectSelector instanceof Subject ? subjectSelector : subjectSelector(group)));
                     // create a new subject for each group taking into account the durationSelector (takeUntil the durationSelector emits)
                     state.groups[group] = (!durationSelector ? subject : subject.pipe(takeUntil(durationSelector(subject))));
                     // emit the subject to the observer (operator creates an Observable-Observable)

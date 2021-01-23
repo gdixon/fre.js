@@ -44,7 +44,7 @@ export const bucket = function (boundaries, defaultBoundary, keySelector, elemen
                 // make sure we cast entities
                 if (!state.buckets[boundary]) {
                     // create the base subject to emit against
-                    let subject = (!subjectSelector ? new Subject() : (subjectSelector instanceof Subject ? subjectSelector : subjectSelector(bucket)));
+                    const subject = (!subjectSelector ? new Subject() : (subjectSelector.subscribe && subjectSelector.next ? subjectSelector : subjectSelector(bucket)));
                     // create a new subject for each group taking into account the durationSelector (takeUntil the durationSelector emits)
                     state.buckets[boundary] = (!durationSelector ? subject : subject.pipe(takeUntil(durationSelector(subject))));
                     // emit the subject to the observer (operator creates an Observable-Observable)

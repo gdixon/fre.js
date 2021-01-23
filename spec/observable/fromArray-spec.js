@@ -7,7 +7,7 @@ import chai from 'chai';
 // import sinon for mocking timers (we cant user jasmine.clock here because Async has no delay - jasmine ticks with true(ish) ms boundary emits all in one tick)
 import sinon from 'sinon';
 // FromArray to create a new Observable for each test
-import { FromArray, Async } from "../../src";
+import { FromArray, Async } from "../../src/fre.js";
 // import toArray to finalise tests to one output
 import { toArray } from "../../src/operator";
 

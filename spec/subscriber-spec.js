@@ -1,7 +1,7 @@
 // import chai for testing
 import chai from 'chai';
 // construct new Observable instances for each test
-import { Subscriber, Observer } from "../src";
+import { Subscriber, Observer } from "../src/fre.js";
 
 describe("fre Subscriber functionality", function () {
 

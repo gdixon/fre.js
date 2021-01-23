@@ -1,7 +1,5 @@
 // construct an observer against the projected observable to forward messages
 import { Subscriber } from "../subscriber.js";
-// type check against the projected value to check for Observable type - otherwise just map the value
-import { Observable } from "../observable.js";
 // base Operator all others should be able to fit into...
 import { operator } from "./operator.js";
 
@@ -42,9 +40,9 @@ export const mergeMap = function (project, selector, concurrency, unsubscribe) {
                     // incr concurrent count
                     state.concurrent++;
                     // pull the res from the projection or attempt to use the message itself if project is missing
-                    const inner = (project instanceof Observable ? project : (typeof project === "function" ? project(message, state.index) : message));
+                    const inner = (project && project.subscribe ? project : (typeof project === "function" ? project(message, state.index) : message));
                     // ensure Observable else throw
-                    if (!(inner instanceof Observable)) {
+                    if (!(inner && inner.subscribe)) {
                         // throwing if we can't build an Observable from the project 
                         throw ("MergeMap: Project must be supplied as fn which resolves to an Observable");
                     } else {

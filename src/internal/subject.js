@@ -32,8 +32,8 @@ export class Subject extends Observable {
     subscribe(next, error, complete, unsubscribe) {
         // when the Subject is not closed we can subscribe - when closed we should imediately unsubscribe the chain
         if (!this.closed) {
-            // produce an observer
-            const subscriber = (next && next instanceof Subscriber ? next : new Subscriber(next, error, complete, unsubscribe));
+            // produce an observer (using subscriber like check for instances passed as next)
+            const subscriber = (next && next.observer ? next : new Subscriber(next, error, complete, unsubscribe));
             // record the observers if its not already recorded and this subject isnt in stopped state (complete called on source)
             if (!subscriber.isStopped) {
                 // record the observer and associate a teardown to reverse the subscription
@@ -118,7 +118,7 @@ export class Subject extends Observable {
             // always mark as stopped
             this.isStopped = true;
             // drop outer subscription on end of observers
-            this.observers.concat().map(observer => {
+            this.observers.concat().forEach(observer => {
                 // allow the Observer to unsubscribe by its own terms
                 observer.unsubscribe();
             });
