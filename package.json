@@ -1,6 +1,6 @@
 {
   "name": "@gdixon/fre",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "license": "MIT",
   "description": "(F)unctional (Re)active Programming library",
   "homepage": "https://github.com/gdixon/fre.js",
@@ -10,10 +10,12 @@
   "files": [
     "es5",
     "es2015",
+    "internal",
     "observable",
     "operator",
     "scheduler",
-    "fre.iife.js",
+    "fre.bundle.js",
+    "fre.js",
     "index.js",
     "LICENSE",
     "package.json",
