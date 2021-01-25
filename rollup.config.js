@@ -1,5 +1,5 @@
 // transpile the builds into es5 compatible versions
-import babel from 'rollup-plugin-babel';
+import babel from '@rollup/plugin-babel';
 
 // minify the the builds
 import terser from "rollup-plugin-terser";
@@ -14,7 +14,8 @@ const iifeBuild = {
     },
     plugins: [
         babel({
-            exclude: 'node_modules/**'
+            exclude: 'node_modules/**',
+            babelHelpers: 'bundled'
         }),
         terser.terser()
     ]

@@ -2,7 +2,7 @@
 
 ![CircleCI](https://img.shields.io/circleci/build/gh/gdixon/fre.js/master.svg?style=flat-square&token=e8f98a51ce30c29ebffd779ff7fcc43eaee162e5)
 ![Codecov](https://img.shields.io/codecov/c/github/gdixon/fre.js/master.svg?style=flat-square&token=HA6EDXX9NE)
-![Bundled size](https://img.badgesize.io/https://unpkg.com/@gdixon/fre@0.0.7/fre.bundle.js?label=bundled&style=flat-square)
+![Bundled size](https://img.badgesize.io/https://unpkg.com/@gdixon/fre/fre.bundle.js?label=bundled&style=flat-square)
 ![NPM version](https://img.shields.io/npm/v/@gdixon/fre?label=version&style=flat-square)
 ![License](https://img.shields.io/badge/License-MIT-yellow.svg?label=license&style=flat-square)
 
@@ -401,7 +401,7 @@ npm run build
 
 ## License
 
-- This project is licensed under the MIT License - see the [license](https://github.com/gdixon/fre.js/LICENSE.md) file for details
+- This project is licensed under the MIT License - see the [license](https://github.com/gdixon/fre.js/LICENSE) file for details
 
 ## Acknowledgements
 
